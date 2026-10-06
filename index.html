@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Sala de Juegos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f8fafc; 
+            background-image: radial-gradient(circle at 50% 0%, #e2e8f0 0%, transparent 75%);
+        }
+    </style>
+</head>
+<body class="text-gray-800 min-h-screen font-sans antialiased">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 pb-6 border-b border-gray-300 gap-4">
+            <h1 class="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-green-400 via-green-600 to-green-800 drop-shadow-sm">
+                Sistema de Gestión
+            </h1>
+            <a href="/nueva_reserva" class="inline-flex items-center justify-center px-6 py-3 border border-green-800 text-base font-medium rounded-lg text-white bg-gradient-to-b from-green-400 via-green-500 to-green-700 hover:from-green-300 hover:via-green-400 hover:to-green-600 shadow-[inset_0_1px_1px_rgba(255,255,255,0.5),0_4px_10px_rgba(22,163,74,0.4)] transition-all duration-300">
+                + Registrar Nuevo Turno
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl border border-gray-200 shadow-xl overflow-hidden">
+                <div class="px-6 py-4 border-b border-green-800 bg-gradient-to-b from-green-500 via-green-600 to-green-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2 drop-shadow-md">
+                        Historial de Clientes
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-600 text-xs uppercase tracking-wider">
+                                <th class="px-6 py-3 font-semibold">DNI</th>
+                                <th class="px-6 py-3 font-semibold">Nombre</th>
+                                <th class="px-6 py-3 font-semibold">Apellido</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for cli in clientes %}
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 text-gray-500 font-mono text-sm">{{ cli.dni }}</td>
+                                <td class="px-6 py-4 font-medium text-gray-800">{{ cli.nombre }}</td>
+                                <td class="px-6 py-4 text-gray-600">{{ cli.apellido }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl border border-gray-200 shadow-xl overflow-hidden">
+                <div class="px-6 py-4 border-b border-green-800 bg-gradient-to-b from-green-500 via-green-600 to-green-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2 drop-shadow-md">
+                        Turnos Reservados
+                    </h2>
+                </div>
+                <ul class="divide-y divide-gray-200">
+                    {% for res in reservas %}
+                    <li class="p-6 hover:bg-gray-50 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="text-lg font-bold text-green-700">
+                                    {{ res.cliente_nom }} {{ res.cliente_ape }}
+                                </h3>
+                                <p class="text-sm text-gray-500 mt-1 font-semibold flex items-center gap-2">
+                                    Juego: {{ res.juego_nom }} <span class="text-gray-300">|</span> Encargado: <span class="text-gray-800">{{ res.trabajador_nom }}</span>
+                                </p>
+                            </div>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-300 shadow-inner">
+                                {{ res.fecha }} • {{ res.hora }}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mt-4">
+                            <p class="text-sm text-gray-500">
+                                Duración: <span class="font-semibold text-gray-800">{{ res.duracion }} minutos</span>
+                                <span class="mx-2 text-gray-300">|</span>
+                                Código: <span class="font-mono text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded border border-green-200">#{{ res.codigo_reserva }}</span>
+                            </p>
+                            
+                            <div>
+                                {% if res.acompanado %}
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium text-white bg-gradient-to-b from-green-400 via-green-500 to-green-600 border border-green-700 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
+                                        Viene acompañado
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gradient-to-b from-gray-100 to-gray-200 text-gray-600 border border-gray-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                                        Viene solo
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
